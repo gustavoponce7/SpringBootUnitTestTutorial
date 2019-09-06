@@ -44,9 +44,7 @@ pipeline {
             }
             post {
                 success {
-					buildnumber = BUILD_NUMBER
-					mycomment = 'Build ' + $buildnumber + 'is successful. Making deployment to the servers!'
-					jiraAddComment comment: $mycomment, idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: 'localjira'
+					jiraAddComment comment: 'Build is successful. Making deployment to the servers!', idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: 'localjira'
 					echo 'Now Archiving'
                     archiveArtifacts artifacts: '**/target/*.jar'
                 }
