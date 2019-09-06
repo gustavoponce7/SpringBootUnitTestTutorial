@@ -28,6 +28,12 @@ pipeline {
 						currentBuild.result = 'ABORTED'
 						error('Stopping early... as input form is empty!')
 					}
+					
+					get_issue = jiraGetIssue idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: jira_site_name
+					if(get_issue == null) {
+						currentBuild.result = 'ABORTED'
+						error('Stopping early... as invalid jira id is given!')
+					}
 				}
 			}
 		}
