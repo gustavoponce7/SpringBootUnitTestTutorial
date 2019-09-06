@@ -40,7 +40,7 @@ pipeline {
             post {
                 success {
 					script {
-						build_info_comment = "Build ${currentBuild.number} started by " + ${env.BUILD_USER_ID} + " failed while running unit tests."
+						build_info_comment = "Build ${currentBuild.number} started by ${BUILD_USER} failed while running unit tests."
 						if(jira_id_map != null && jira_id_map['Jira Id'] != null && jira_id_map['Jira Id'].toString()?.trim()) {
 								jiraAddComment comment: build_info_comment, idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: jira_site_name
 						} else {
