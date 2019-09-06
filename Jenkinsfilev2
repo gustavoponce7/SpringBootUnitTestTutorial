@@ -11,7 +11,7 @@ pipeline {
 				script {
 					try {
 						timeout(time:30, unit:'SECONDS') {
-							jira_id_map = input(message: 'Enter details (or leave blank) and press [Proceed]!!', parameters: [[$class: 'TextParameterDefinition', name: 'Jira Id'], [$class: 'BooleanParameterDefinition', defaultValue: true, name: 'Skip Vulnerability stage?']], submitterParameter: 'APPROVER')
+							jira_id_map = input(message: 'Enter details (or leave blank) and press [Proceed]!!', parameters: [[$class: 'TextParameterDefinition', name: 'Jira Id'], [$class: 'BooleanParameterDefinition', defaultValue: false, name: 'Skip Vulnerability stage?']], submitterParameter: 'APPROVER')
 						}
 					} catch (err) {
 					
@@ -55,10 +55,13 @@ pipeline {
             }
         }
 		stage('Running vulnerability check') {
+			is_allowed = jira_id_map['Skip Vulnerability stage?']
+			println(is_allowed)
 			when {
-				expression { jira_id_map['Skip Vulnerability stage?'] == true }
+				expression {  is_allowed == true }
 			}
 			steps {
+				
 				println("Running vulnerability check.")
 			}
 		}
