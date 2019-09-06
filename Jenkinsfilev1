@@ -10,7 +10,7 @@ pipeline {
 				script {
 					try {
 						timeout(time:30, unit:'SECONDS') {
-							jira_id_map = input(message: 'Enter Jira Id (or leave blank)!!', parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: '', name: 'Jira Id']])
+							jira_id_map = input(message: 'Enter Jira Id (or leave blank) and press [Proceed]!!', parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: '', name: 'Jira Id']], submitterParameter: 'APPROVER')
 						}
 					} catch (err) {
 					
@@ -40,12 +40,12 @@ pipeline {
             post {
                 success {
 					script {
-						build_info_comment = "Build ${currentBuild.number} started by failed while running unit tests."
 						if(jira_id_map != null && jira_id_map['Jira Id'] != null && jira_id_map['Jira Id'].toString()?.trim()) {
-								jiraAddComment comment: build_info_comment, idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: jira_site_name
+							build_info_comment = "Build ${currentBuild.number} started by " + jira_id_map['APPROVER'] + " is successful."
+							jiraAddComment comment: build_info_comment, idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: 'localjira'
 						} else {
-								new_issue = [fields: [ project: [key: 'SSP'], summary: 'Build error.', description: build_info_comment, issuetype: [name: 'Bug']]]
-								jiraNewIssue issue: new_issue, site: jira_site_name
+							def new_issue = [fields: [ project: [key: 'SSP'], summary: 'Build error.', description: 'Jenkins job failed at build and test step. Please check!', issuetype: [name: 'Bug']]]
+							jiraNewIssue issue: new_issue, site: 'localjira'
 						}
 					}
 					echo 'Now Archiving'

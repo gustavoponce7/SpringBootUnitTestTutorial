@@ -11,7 +11,7 @@ pipeline {
 				script {
 					try {
 						timeout(time:30, unit:'SECONDS') {
-							jira_id_map = input(message: 'Enter Jira Id (or leave blank) and press [Proceed]!!', parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: '', name: 'Jira Id']], submitterParameter: 'APPROVER')
+							jira_id_map = input(message: 'Enter Jira Id (or leave blank)!!', parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: '', name: 'Jira Id']])
 						}
 					} catch (err) {
 					
@@ -29,13 +29,10 @@ pipeline {
 				bat 'mvn test'
             }
 			post {
-				success {
-					println ("All unit test cases passed. Publishing the unit results test coverage for the team.")
-				}
-                failure {
+                success {
                     println ("Unit test cases failed. Logging a jira ticket for the developers!")
 					script {
-						build_info_comment = "Build ${currentBuild.number} started by " + jira_id_map['APPROVER'] + " failed while running unit tests."
+						build_info_comment = "Build ${currentBuild.number} failed while running unit tests."
 						if(jira_id_map != null && jira_id_map['Jira Id'] != null && jira_id_map['Jira Id'].toString()?.trim()) {
 								jiraAddComment comment: build_info_comment, idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: jira_site_name
 						} else {
