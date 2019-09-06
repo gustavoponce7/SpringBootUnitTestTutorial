@@ -4,9 +4,7 @@ pipeline {
 	tools {
         maven 'localmaven'
     }
-
 	stages{
-	
 		stage('Input Jira Id') {
 			steps {
 				script {
@@ -20,13 +18,11 @@ pipeline {
 				}
 			}
 		}
-		
 		stage('Cleaning') {
 			 steps {
 				bat 'mvn clean'
             }
 		}
-		
 		stage('Running Unit Tests') {
 			 steps {
 				bat 'mvn test'
@@ -37,7 +33,6 @@ pipeline {
                 }
             }
 		}
-		
         stage('Build') {
             steps {
 				bat 'mvn clean package'
@@ -45,29 +40,24 @@ pipeline {
             post {
                 success {
 					script {
-						echo "build ${currentBuild.number} is successful. Making deployment to the servers!"
-						mybuild = "build ${currentBuild.number} is successful. Making deployment to the servers!"
-						echo mybuild;
+						build_info_comment = "Build ${currentBuild.number} is successful. Making deployment to the servers!"
+						echo build_info_comment;
 					}
-					
-					jiraAddComment comment: 'Build is successful. Making deployment to the servers!', idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: 'localjira'
+					jiraAddComment comment: build_info_comment, idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: 'localjira'
 					echo 'Now Archiving'
                     archiveArtifacts artifacts: '**/target/*.jar'
                 }
             }
         }
-		
         stage ('Deploy to Staging') {
 			steps {
 				echo 'Deploying to staging.'
 			}
         }
-		
 		stage ('Deploy to Production') {
             steps {
 				echo 'Deploying to production.'
 			}
         }
-		
     }
 }
