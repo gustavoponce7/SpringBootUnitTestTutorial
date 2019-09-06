@@ -44,8 +44,9 @@ pipeline {
             }
             post {
                 success {
-					echo ("User has following jira id= " + jira_id_map['Jira Id'] + ", and is approved by= " + jira_id_map['APPROVER'])
-					jiraAddComment comment: 'Build successfull. Making deployment to the servers.', idOrKey: 'SSP-13', site: 'localjira'
+					echo "current build number: ${currentBuild.number}"
+					echo ("User has following jira id= " + jira_id_map['Jira Id'].toString().toUpperCase() + ", and is approved by= " + jira_id_map['APPROVER'])
+					jiraAddComment comment: 'Build successful. Making deployment to the servers.', idOrKey: jira_id_map['Jira Id'], site: 'localjira'
 					echo 'Now Archiving'
                     archiveArtifacts artifacts: '**/target/*.jar'
                 }
