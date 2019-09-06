@@ -7,7 +7,7 @@ pipeline {
     }
 	stages{
 	
-		stage('Input details') {
+		stage('Enter input details') {
 			steps {
 				script {
 					try {
@@ -26,7 +26,7 @@ pipeline {
 				script {
 					if(jira_id_map == null || jira_id_map['APPROVER'] == null) {
 						currentBuild.result = 'ABORTED'
-						error('Stopping early… as input form is empty!')
+						error('Stopping early... as input form is empty!')
 					}
 				}
 			}
@@ -43,14 +43,11 @@ pipeline {
 				bat 'mvn test'
             }
 			post {
-				success {
-					println ("All unit test cases successfully passed. Publishing the unit results test coverage for the team.")
-				}
-                failure {
+                success {
                     println ("Unit test cases failed. Logging a jira ticket for the developers.")
 					script {
 						build_info_comment = "Build ${currentBuild.number} started by " + jira_id_map['APPROVER'] + " is failing while running unit tests."
-						if(jira_id_map != null && jira_id_map['Jira Id'] != null && jira_id_map['Jira Id'].toString()?.trim()) {
+						if(jira_id_map['Jira Id'].toString()?.trim()) {
 								jiraAddComment comment: build_info_comment, idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: jira_site_name
 						} else {
 								new_issue = [fields: [ project: [key: 'SSP'], summary: 'Unit Test Cases failed', description: build_info_comment, issuetype: [name: 'Bug']]]
