@@ -55,14 +55,11 @@ pipeline {
             }
         }
 		stage('Running vulnerability check') {
-			is_allowed = jira_id_map['Skip Vulnerability stage?']
-			println(is_allowed)
 			when {
-				expression {  is_allowed == true }
+				expression {  jira_id_map['Skip Vulnerability stage?'] == true }
 			}
 			steps {
-				
-				println("Running vulnerability check.")
+				println("Running vulnerability check stage.")
 			}
 		}
         stage ('Push To ECS and Deploy') {
