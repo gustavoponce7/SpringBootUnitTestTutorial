@@ -56,7 +56,7 @@ pipeline {
         }
 		stage('Running vulnerability check') {
 			when {
-				expression {  jira_id_map['Skip Vulnerability stage?'] == true }
+				expression {  jira_id_map['Skip Vulnerability stage?'] == false }
 			}
 			steps {
 				println("Running vulnerability check stage.")
