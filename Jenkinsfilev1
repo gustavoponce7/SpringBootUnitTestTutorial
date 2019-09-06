@@ -1,11 +1,10 @@
+def jira_id_map
 pipeline {
     agent any
 	tools {
         maven 'localmaven'
     }
-	
-	def jira_id_map = "";
-    
+
 	stages{
 	
 		stage('Input Jira Id') {
