@@ -4,7 +4,7 @@ pipeline {
         maven 'localmaven'
     }
 	
-	def jira_id_map;
+	def jira_id_map = "";
     
 	stages{
 	
