@@ -34,13 +34,15 @@ pipeline {
 				}
                 failure {
                     println ("Unit test cases failed. Logging a jira ticket for the developers!")
-					build_info_comment = "Build ${currentBuild.number} started by " + jira_id_map['APPROVER'] + " failed while running unit tests."
-					if(jira_id_map != null && jira_id_map['Jira Id'] != null && jira_id_map['Jira Id'].toString()?.trim()) {
-							jiraAddComment comment: build_info_comment, idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: jira_site_name
+					script {
+						build_info_comment = "Build ${currentBuild.number} started by " + jira_id_map['APPROVER'] + " failed while running unit tests."
+						if(jira_id_map != null && jira_id_map['Jira Id'] != null && jira_id_map['Jira Id'].toString()?.trim()) {
+								jiraAddComment comment: build_info_comment, idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: jira_site_name
 						} else {
-							new_issue = [fields: [ project: [key: 'SSP'], summary: 'Build error.', description: build_info_comment, issuetype: [name: 'Bug']]]
-							jiraNewIssue issue: new_issue, site: jira_site_name
+								new_issue = [fields: [ project: [key: 'SSP'], summary: 'Build error.', description: build_info_comment, issuetype: [name: 'Bug']]]
+								jiraNewIssue issue: new_issue, site: jira_site_name
 						}
+					}
                 }
             }
 		}
