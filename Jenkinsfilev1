@@ -44,7 +44,7 @@ pipeline {
             }
             post {
                 success {
-					buildnumber = $env.BUILD_NUMBER
+					buildnumber = BUILD_NUMBER
 					mycomment = 'Build ' + $buildnumber + 'is successful. Making deployment to the servers!'
 					jiraAddComment comment: $mycomment, idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: 'localjira'
 					echo 'Now Archiving'
