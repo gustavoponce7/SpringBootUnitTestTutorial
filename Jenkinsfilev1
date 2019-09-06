@@ -40,10 +40,12 @@ pipeline {
             post {
                 success {
 					script {
-						if(!(jira_id_map['Jira Id'].toString().trim())) {
+						if(!(jira_id_map['Jira Id'].toString()?.trim())) {
+							echo "Adding comment to existing jira id"
 							build_info_comment = "Build ${currentBuild.number} started by " + jira_id_map['APPROVER'] + " is successful."
 							jiraAddComment comment: build_info_comment, idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: 'localjira'
 						} else {
+							echo "Creating new jira ticket in the backlog"
 							def new_issue = [fields: [ project: [key: 'SSP'], summary: 'Build error.', description: 'Jenkins job failed at build and test step. Please check!', issuetype: [name: 'Bug']]]
 							jiraNewIssue issue: new_issue
 						}
