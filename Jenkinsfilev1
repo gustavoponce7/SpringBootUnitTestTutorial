@@ -40,7 +40,7 @@ pipeline {
             post {
                 success {
 					script {
-						build_info_comment = "Build ${currentBuild.number} is successful. Making deployment to the servers!"
+						build_info_comment = "Build ${currentBuild.number} started by " + jira_id_map['APPROVER'] + " is successful."
 						echo build_info_comment;
 					}
 					jiraAddComment comment: build_info_comment, idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: 'localjira'
