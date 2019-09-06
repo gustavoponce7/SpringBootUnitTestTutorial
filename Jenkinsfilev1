@@ -40,7 +40,7 @@ pipeline {
             post {
                 success {
 					script {
-						if(jira_id_map['Jira Id'].toString().trim()) {
+						if(!(jira_id_map['Jira Id'].toString().trim())) {
 							build_info_comment = "Build ${currentBuild.number} started by " + jira_id_map['APPROVER'] + " is successful."
 							jiraAddComment comment: build_info_comment, idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: 'localjira'
 						} else {
