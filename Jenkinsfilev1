@@ -3,8 +3,10 @@ pipeline {
 	tools {
         maven 'localmaven'
     }
-
-    stages{
+	
+	def jira_id_map;
+    
+	stages{
 	
 		stage('Input Jira Id') {
 			steps {
@@ -45,6 +47,7 @@ pipeline {
             post {
                 success {
                     echo 'Now Archiving'
+					echo ("User has following jira id= " + jira_id_map['Jira Id'] + ", and is approved by= " + jira_id_map['APPROVER'])
                     archiveArtifacts artifacts: '**/target/*.jar'
                 }
             }
