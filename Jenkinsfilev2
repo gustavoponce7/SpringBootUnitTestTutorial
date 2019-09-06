@@ -29,8 +29,11 @@ pipeline {
 				bat 'mvn test'
             }
 			post {
-                success {
-                    println ("Unit test cases failed. Logging a jira ticket for the developers!")
+				success {
+					println ("All unit test cases successfully passed. Publishing the unit results test coverage for the team.")
+				}
+                failure {
+                    println ("Unit test cases failed. Logging a jira ticket for the developers.")
 					script {
 						build_info_comment = "Build ${currentBuild.number} started by " + jira_id_map['APPROVER'] + " is failing while running unit tests."
 						if(jira_id_map != null && jira_id_map['Jira Id'] != null && jira_id_map['Jira Id'].toString()?.trim()) {
