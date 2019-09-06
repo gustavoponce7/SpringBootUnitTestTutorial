@@ -30,7 +30,7 @@ pipeline {
             }
 			post {
 				success {
-					println ("All unit test cases failed. Publishing the unit results test coverage for the team.")
+					println ("All unit test cases passed. Publishing the unit results test coverage for the team.")
 				}
                 failure {
                     println ("Unit test cases failed. Logging a jira ticket for the developers!")
