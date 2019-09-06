@@ -33,7 +33,7 @@ pipeline {
             }
 			post {
                 failure {
-                    echo ' Unit test cases failed. Logging a jira ticket for jira id jira_id_map['Jira Id'].'
+                    echo ("Unit test cases failed. Logging a jira ticket for jira id= " + jira_id_map['Jira Id'] + ".")
                 }
             }
 		}
