@@ -4,11 +4,27 @@ pipeline {
         maven 'localmaven'
     }
     stages{
+		stage('Input Jira Id') {
+			steps {
+				script {
+					try {
+						timeout(time:30, unit:'SECONDS') {
+							jira_id_map = input(message: 'Enter Jira Id (or leave blank) and press [Proceed]!!', parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: '', name: 'Jira Id']], submitterParameter: 'APPROVER')
+							echo ("User has following jira id= " + jira_id_map['Jira Id'] + ", and is approved by= " + jira_id_map['APPROVER'])
+						}
+					} catch (err) {
+					
+					}
+				}
+			}
+		}
+		
 		stage('Cleaning') {
 			 steps {
 				bat 'mvn clean'
             }
 		}
+		
 		stage('Running Unit Tests') {
 			 steps {
 				bat 'mvn test'
@@ -19,6 +35,7 @@ pipeline {
                 }
             }
 		}
+		
         stage('Build') {
             steps {
 				bat 'mvn clean package'
@@ -30,15 +47,18 @@ pipeline {
                 }
             }
         }
+		
         stage ('Deploy to Staging') {
 			steps {
 				echo 'Deploying to staging'
 			}
         }
-		stage ('Deploy to Production'){
+		
+		stage ('Deploy to Production') {
             steps {
 				echo 'Deploying to production'
 			}
         }
+		
     }
 }
