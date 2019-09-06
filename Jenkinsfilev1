@@ -33,7 +33,7 @@ pipeline {
             }
 			post {
                 failure {
-                    echo ' Unit test cases failed. Creating jira ticket.'
+                    echo ' Unit test cases failed. Logging a jira ticket for jira id jira_id_map['Jira Id'].'
                 }
             }
 		}
@@ -44,9 +44,7 @@ pipeline {
             }
             post {
                 success {
-					echo "current build number: ${currentBuild.number}"
-					echo ("User has following jira id= " + jira_id_map['Jira Id'].toString().toUpperCase() + ", and is approved by= " + jira_id_map['APPROVER'])
-					jiraAddComment comment: 'Build successful. Making deployment to the servers.', idOrKey: jira_id_map['Jira Id'], site: 'localjira'
+					jiraAddComment comment: 'Build ${currentBuild.number} is successful. Making deployment to the servers!', idOrKey: jira_id_map['Jira Id'].toString().toUpperCase(), site: 'localjira'
 					echo 'Now Archiving'
                     archiveArtifacts artifacts: '**/target/*.jar'
                 }
