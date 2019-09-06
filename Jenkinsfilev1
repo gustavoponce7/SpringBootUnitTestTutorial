@@ -3,11 +3,7 @@ pipeline {
 	tools {
         maven 'localmaven'
     }
-	
-	parameters {
-		string(message: 'Enter Jira Id (or leave blank) and press [Proceed]!!', parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: '', name: 'Jira Id']], submitterParameter: 'APPROVER')
-    }
-	
+
     stages{
 	
 		stage('Input Jira Id') {
@@ -15,7 +11,8 @@ pipeline {
 				script {
 					try {
 						timeout(time:30, unit:'SECONDS') {
-							echo "Hello ${params.APPROVER}"
+							jira_id_map = input(message: 'Enter Jira Id (or leave blank) and press [Proceed]!!', parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: '', name: 'Jira Id']], submitterParameter: 'APPROVER')
+							echo ("User has following jira id= " + jira_id_map['Jira Id'] + ", and is approved by= " + jira_id_map['APPROVER'])
 						}
 					} catch (err) {
 					
