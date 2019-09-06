@@ -1,29 +1,44 @@
 pipeline {
     agent any
+	tools {
+        maven 'localmaven'
+    }
+    stages{
+		stage('Clean') {
+			 steps {
+				bat 'mvn clean'
+            }
+		}
+		stage('Test') {
+			 steps {
+				bat 'mvn test'
+            }
+			post {
+                success {
+                    echo 'Test Success.'
+                }
 
-stages {
-        stage('Initializing') {
+                failure {
+                    echo ' Test failed.'
+                }
+            }
+		}
+        stage('Build'){
             steps {
-                echo 'Initializing. . . . . .!'
+				bat 'mvn clean package'
+            }
+            post {
+                success {
+                    echo 'Now Archiving...'
+                    archiveArtifacts artifacts: '**/target/*.war'
+                }
             }
         }
-		
-		stage('Testing') {
-            steps {
-                echo 'Testing. . . . . .!'
-            }
+        stage ('Deploy to Staging'){
+            echo 'Deploying. to staging environment .'
         }
-		
-		stage('Building') {
-            steps {
-                echo 'Building. . . . . .!'
-            }
-        }
-		
-		stage('Deploying') {
-            steps {
-                echo 'Deploying. . . . . .!'
-            }
+		stage ('Deploy to Production'){
+            echo 'Deploying. to production environment . '
         }
     }
 }
