@@ -13,7 +13,6 @@ pipeline {
 					try {
 						timeout(time:30, unit:'SECONDS') {
 							jira_id_map = input(message: 'Enter Jira Id (or leave blank) and press [Proceed]!!', parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: '', name: 'Jira Id']], submitterParameter: 'APPROVER')
-							echo ("User has following jira id= " + jira_id_map['Jira Id'] + ", and is approved by= " + jira_id_map['APPROVER'])
 						}
 					} catch (err) {
 					
@@ -45,8 +44,9 @@ pipeline {
             }
             post {
                 success {
-                    echo 'Now Archiving'
 					echo ("User has following jira id= " + jira_id_map['Jira Id'] + ", and is approved by= " + jira_id_map['APPROVER'])
+					jiraAddComment comment: 'Build successfull. Making deployment to the servers.', idOrKey: 'SSP-13', site: 'localjira'
+					echo 'Now Archiving'
                     archiveArtifacts artifacts: '**/target/*.jar'
                 }
             }
