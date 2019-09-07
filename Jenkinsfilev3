@@ -1,10 +1,14 @@
 def jira_site_name = 'localjira'
 def jira_id_map
+
 pipeline {
-    agent any
+    
+	agent any
+	
 	tools {
         maven 'localmaven'
     }
+	
 	stages{
 	
 		stage('Enter input details') {
