@@ -3,23 +3,23 @@ package com.example.service;
 import com.example.exception.ToDoException;
 import com.example.model.ToDo;
 import com.example.repository.ToDoRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class ToDoServiceTest {
 
     @Mock
@@ -28,7 +28,7 @@ public class ToDoServiceTest {
     @InjectMocks
     private ToDoServiceImpl toDoService;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
     }
@@ -71,7 +71,5 @@ public class ToDoServiceTest {
         toDoService.removeToDo(toDo);
         verify(toDoRepository, times(1)).delete(toDo);
     }
-
-
 }
 
