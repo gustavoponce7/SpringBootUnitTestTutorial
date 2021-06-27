@@ -1,13 +1,16 @@
 package com.example.service;
 
-import java.util.List;
-
 import com.example.exception.ToDoException;
 import com.example.model.ToDo;
 
+import java.util.List;
+
 public interface ToDoService {
-	public List<ToDo> getAllToDo();
-	public ToDo getToDoById(long id) throws ToDoException;
-	public ToDo saveToDo(ToDo todo);
-	public void removeToDo(ToDo todo);
+    List<ToDo> getAllToDo();
+
+    ToDo getToDoById(long id) throws ToDoException;
+
+    ToDo saveToDo(ToDo todo);
+
+    void removeToDo(ToDo todo);
 }
