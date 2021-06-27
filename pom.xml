@@ -83,5 +83,18 @@
                 <version>2.22.0</version>
             </plugin>
         </plugins>
+
+        <!-- vulnerability check changes -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <configuration>
+                        <retireJsAnalyzerEnabled>false</retireJsAnalyzerEnabled>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>
