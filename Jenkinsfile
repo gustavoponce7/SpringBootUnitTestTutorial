@@ -34,6 +34,8 @@ node('master') {
 
         stage("Running vulnerability check") {
             echo "Running the vulnerability step"
+            // sh "mvn dependency-check:aggregate -DsuppressionFile.path=suppressions.xml"
+            sh "mvn dependency-check:aggregate"
         }
 
         stage("Building docker image") {
