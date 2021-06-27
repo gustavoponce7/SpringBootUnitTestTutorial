@@ -1,8 +1,12 @@
 pipeline {
     agent any
 
+    options {
+        buildDiscarder(logRotator(daysToKeepStr: '3', numToKeepStr: '3', artifactDaysToKeepStr: '15', artifactNumToKeepStr: '5'))
+    }
+
     triggers {
-            pollSCM '* * * * *'
+            pollSCM 'H * * * *'
     }
 
     stages {
