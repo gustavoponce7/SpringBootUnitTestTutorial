@@ -2,6 +2,7 @@ package com.example.service;
 
 import java.util.List;
 
+import com.example.exception.ToDoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ public class ToDoServiceImpl implements ToDoService{
 	}
 
 	@Override
-	public ToDo getToDoById(long id) {
-		return toDoRepository.findOne(id);
+	public ToDo getToDoById(long id) throws ToDoException {
+		return toDoRepository.findById(id).orElseThrow(() -> new ToDoException("Entity not found"));
 	}
 
 	@Override
@@ -33,6 +34,4 @@ public class ToDoServiceImpl implements ToDoService{
 	public void removeToDo(ToDo todo) {
 		toDoRepository.delete(todo);
 	}
-	
-
 }
