@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+
+    triggers {
+            pollSCM '* * * * *'
+    }
+
+    stages {
+            stage('Running testcases') {
+                steps {
+                    sh "mvn test"
+                }
+            }
+            stage('Bundling project') {
+                steps {
+                    sh "mvn clean install"
+                }
+            }
+        }
+}
