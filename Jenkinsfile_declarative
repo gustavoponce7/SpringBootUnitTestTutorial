@@ -1,0 +1,24 @@
+pipeline {
+    agent any
+
+    options {
+        buildDiscarder(logRotator(daysToKeepStr: '3', numToKeepStr: '3', artifactDaysToKeepStr: '15', artifactNumToKeepStr: '5'))
+    }
+
+    triggers {
+            pollSCM 'H * * * *'
+    }
+
+    stages {
+            stage('Running testcases') {
+                steps {
+                    sh "mvn test"
+                }
+            }
+            stage('Bundling project') {
+                steps {
+                    sh "mvn clean install"
+                }
+            }
+        }
+}
